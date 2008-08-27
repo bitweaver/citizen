@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_citizen/index.php,v 1.2 2008/08/27 15:11:11 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_citizen/index.php,v 1.3 2008/08/27 16:20:01 lsces Exp $
  *
  * Copyright (c) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  *
- * @package contacts
+ * @package citizen
  * @subpackage functions
  */
 
@@ -17,7 +17,7 @@ require_once( '../bit_setup_inc.php' );
 
 include_once( CITIZEN_PKG_PATH.'Citizen.php' );
 
-$gBitSystem->isPackageActive('contacts', TRUE);
+$gBitSystem->isPackageActive('citizen', TRUE);
 
 $gContent = new Citizen();
 
@@ -28,7 +28,7 @@ if( !empty( $_REQUEST['content_id'] ) ) {
 // Comments engine!
 if( $gBitSystem->isFeatureActive( 'feature_citizen_comments' ) ) {
 	$comments_vars = Array('page');
-	$comments_prefix_var='contact note:';
+	$comments_prefix_var='citizen note:';
 	$comments_object_var='page';
 	$commentsParentId = $gContent->mContentId;
 	$comments_return_url = CITIZEN_PKG_URL.'index.php?content_id='.$gContent->mContentId;
