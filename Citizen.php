@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.1 2008/08/27 16:20:01 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.2 2008/10/20 21:40:09 spiderr Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -45,7 +45,7 @@ class Citizen extends LibertyConent {
 		$this->mContentTypeGuid = CONTACTS_CONTENT_TYPE_GUID;
 				// Permission setup
 		$this->mViewContentPerm  = 'p_citizen_view';
-		$this->mEditContentPerm  = 'p_citizen_edit';
+		$this->mUpdateContentPerm  = 'p_citizen_edit';
 		$this->mAdminContentPerm = 'p_citizen_admin';
 		
 	}
