@@ -1,7 +1,7 @@
 
 		{assign var=xrefcnt value=$citizenInfo.xref|@count}
 		{jstab title="Cross reference ($xrefcnt)"}
-		{legend legend="Import HMTL"}
+		{legend legend="Imported References"}
 		<div class="row">
 			{formlabel label="Cross reference" for="xref"}
 			{forminput}

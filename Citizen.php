@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.3 2008/11/26 08:20:24 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.4 2008/11/26 12:07:25 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -379,8 +379,8 @@ class Citizen extends LibertyContent {
 		else $date[21] = null;
 		$pDataHash['data_store']['last_update_date'] = $date;
 
-		$query_cant = "SELECT COUNT(con.`content_id`) FROM `".BIT_DB_PREFIX."citizen` ci
-				WHERE con.`usn`=?";
+		$query_cant = "SELECT COUNT(ci.`content_id`) FROM `".BIT_DB_PREFIX."citizen` ci
+				WHERE ci.`usn`=?";
 		$cant = $this->mDb->getOne( $query_cant, Array( 9000000000 + $data[0] ) );
 		
 		if ( $cant > 0 ) {
@@ -560,12 +560,15 @@ class Citizen extends LibertyContent {
 					}
 */
 
-					$sql = "SELECT x.`last_update_date`, x.`source`, x.`cross_reference`, 
+					$sql = "SELECT x.`last_update_date`, x.`source`, x.`cross_reference` 
+							FROM `".BIT_DB_PREFIX."citizen_xref` x
+							WHERE x.content_id = ?";
+/* Link to legacy system
 							CASE
 							WHEN x.`source` = 'POSTFIELD' THEN (SELECT `USN` FROM `".BIT_DB_PREFIX."caller` c WHERE ci.`caller_id` = x.`cross_reference`)
 							ELSE '' END AS USN 
-							FROM `".BIT_DB_PREFIX."citizen_xref` x
-							WHERE x.content_id = ?";
+							
+ */
 
 					$result = $this->mDb->query( $sql, array( $this->mContentId ) );
 
