@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.7 2008/11/26 20:33:45 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.8 2008/11/26 21:13:46 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -738,7 +738,7 @@ class Citizen extends LibertyContent {
 		}
 		$query = "SELECT ci.*, a.UPRN, a.POSTCODE, a.SAO, a.PAO, a.NUMBER, a.STREET, a.LOCALITY, a.TOWN, a.COUNTY, ci.parent_id as uprn,
 			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."citizen_xref` x WHERE x.content_id = ci.content_id ) AS links, 
-			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."task_ticket` e WHERE e.caller_id = ci.usn ) AS enquiries $selectSql 
+			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."task_ticket` e WHERE e.usn = ci.usn ) AS enquiries $selectSql 
 			FROM `".BIT_DB_PREFIX."citizen` ci 
 			LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = ci.content_id $findSql
 			$joinSql 
@@ -842,13 +842,11 @@ class Citizen extends LibertyContent {
 				if ( $res['source'] == 'POSTFIELD' ) $caller[] = $res['cross_reference'];
 			}
 
-			if ( isset( $ticket ) )
-			{ $sql = "SELECT t.* FROM `".BIT_DB_PREFIX."task_ticket` t 
-					WHERE t.caller_id IN(". implode(',', array_fill(0, count($ticket), '?')) ." )";
-				$result = $this->mDb->query( $sql, $ticket );
-				while( $res = $result->fetchRow() ) {
-					$this->mInfo['tickets'][] = $res;
-				}
+			$sql = "SELECT t.* FROM `".BIT_DB_PREFIX."task_ticket` t 
+				WHERE t.usn = ?";
+			$result = $this->mDb->query( $sql, array( $this->mCitizenId ) );
+			while( $res = $result->fetchRow() ) {
+				$this->mInfo['tickets'][] = $res;
 			}
 		}
 	}
