@@ -1,6 +1,14 @@
 <div class="body">
 	<div class="content">
 
+		{if isset($citizenInfo.usn) && ($citizenInfo.usn <> '') }
+		<div class="row">
+			{formlabel label="USN" for="usn"}
+			{forminput}
+				{$citizenInfo.usn|escape} 
+			{/forminput}
+		</div>
+		{/if}
 		{if isset($citizenInfo.organisation) && ($citizenInfo.organisation <> '') }
 		<div class="row">
 			{formlabel label="Organisation" for="organisation"}
