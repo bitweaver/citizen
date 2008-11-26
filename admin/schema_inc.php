@@ -101,7 +101,7 @@ $tables = array(
   appoint_date T NOTNULL,
   appoint_time T NOTNULL,
   staff_id I4 NOTNULL,
-  contact_id I4 NOTNULL,
+  citizen_id I4 NOTNULL,
   reason I2,
   office I4,
   room I2,
@@ -221,7 +221,7 @@ $gBitInstaller->registerPackageInfo( CITIZEN_PKG_NAME, array(
 
 // ### Indexes
 $indices = array (
-	'citizen_contact_id_idx' => array( 'table' => 'citizen', 'cols' => 'contact_id', 'opts' => NULL ),
+	'citizen_citizen_id_idx' => array( 'table' => 'citizen', 'cols' => 'citizen_id', 'opts' => NULL ),
 );
 $gBitInstaller->registerSchemaIndexes( CITIZEN_PKG_NAME, $indices );
 
@@ -236,9 +236,10 @@ $gBitInstaller->registerSchemaSequences( CITIZEN_PKG_NAME, $sequences );
 // ### Default User Permissions
 $gBitInstaller->registerUserPermissions( CITIZEN_PKG_NAME, array(
 	array('p_citizen_view', 'Can browse the Citizen List', 'basic', CITIZEN_PKG_NAME),
-	array('p_citizen_edit', 'Can edit the Citizen List', 'registered', CITIZEN_PKG_NAME),
+	array('p_citizen_update', 'Can update the Citizen List content', 'registered', CITIZEN_PKG_NAME),
+	array('p_citizen_create', 'Can create a new Citizen List entry', 'registered', CITIZEN_PKG_NAME),
 	array('p_citizen_admin', 'Can admin Citizen List', 'admin', CITIZEN_PKG_NAME),
-	array('p_citizen_remove', 'Can remove a Citizen entry', 'editors', CITIZEN_PKG_NAME)
+	array('p_citizen_expunge', 'Can remove a Citizen entry', 'editors', CITIZEN_PKG_NAME)
 ) );
 
 // ### Default Preferences
@@ -261,7 +262,7 @@ $gBitInstaller->registerSchemaDefault( CITIZEN_PKG_NAME, array(
 "INSERT INTO `".BIT_DB_PREFIX."citizen_type` VALUES (6, 'Record Artist')",
 "INSERT INTO `".BIT_DB_PREFIX."citizen_type` VALUES (7, 'Cartographer')",
 
-"INSERT INTO `".BIT_DB_PREFIX."citizen_xref_source`( `source`, `cross_ref_title`, `cross_ref_href` )  VALUES ( NULL, 'Free format information', '../citizen/?xref=')",
+"INSERT INTO `".BIT_DB_PREFIX."citizen_xref_source`( `source`, `cross_ref_title`, `cross_ref_href` )  VALUES ('0' , 'Free format information', '../citizen/?xref=')",
 "INSERT INTO `".BIT_DB_PREFIX."citizen_xref_source`( `source`, `cross_ref_title`, `cross_ref_href` )  VALUES ('#R', 'Residential Address', '../nlpg/?uprn=')",
 "INSERT INTO `".BIT_DB_PREFIX."citizen_xref_source`( `source`, `cross_ref_title`, `cross_ref_href` )  VALUES ('#T', 'Tenant Address', '../nlpg/?uprn=')",
 "INSERT INTO `".BIT_DB_PREFIX."citizen_xref_source`( `source`, `cross_ref_title`, `cross_ref_href` )  VALUES ('#C', 'Correspondence Address', '../nlpg/?uprn=')",
