@@ -221,7 +221,7 @@ $gBitInstaller->registerPackageInfo( CITIZEN_PKG_NAME, array(
 
 // ### Indexes
 $indices = array (
-	'citizen_citizen_id_idx' => array( 'table' => 'citizen', 'cols' => 'citizen_id', 'opts' => NULL ),
+	'citizen_citizen_id_idx' => array( 'table' => 'citizen', 'cols' => 'usn', 'opts' => NULL ),
 );
 $gBitInstaller->registerSchemaIndexes( CITIZEN_PKG_NAME, $indices );
 
