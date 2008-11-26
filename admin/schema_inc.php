@@ -60,6 +60,7 @@ $tables = array(
   ticket_ref T NOT NULL,
   office I4 NOTNULL,
   ticket_no I4 NOT NULL,
+  department I2 DEFAULT 0,
   tags I4 DEFAULT 0,
   clearance I2 DEFAULT 0,
   room I2 DEFAULT 0,
@@ -84,12 +85,14 @@ $tables = array(
   previous I4 NOTNULL,
   room I2,
   proom I2,
+  tags I4 DEFAULT 0,
+  clearance I2 DEFAULT 0,
   applet V(1) DEFAULT '' NOTNULL
 ",
 
 'task_reason' => "
   reason I2 PRIMARY,
-  title C(20),
+  title C(40),
   reason_type I2,
   reason_source I2,
   tag V(3),
@@ -170,6 +173,44 @@ $tables = array(
   reportprint C(32),
   booking I4,
   book I4
+",
+
+'task_caller' => "
+  caller_id I8 PRIMARY,
+  cltype I2,
+  title V(35) DEFAULT '',
+  surname C(32) DEFAULT '',
+  forename C(32) DEFAULT '',
+  company C(40),
+  ni C(9),
+  hbis C(10),
+  address C(255) DEFAULT '',
+  postcode C(10) DEFAULT '',
+  lastvisit T,
+  specialneeds C(4),
+  staff_id I4 DEFAULT 0,
+  note C(40),
+  memo X,
+  cllink I4,
+  usn I8
+",
+
+'task_staff' => "
+  staff_id I8 PRIMARY,
+  surname C(32) DEFAULT '',
+  forename C(32) DEFAULT '',
+  initials C(4) DEFAULT '',
+  direct C(16) DEFAULT '',
+  team I4 DEFAULT 0,
+  ext C(8) DEFAULT '',
+  category I2 DEFAULT 0,
+  logon C(4),
+  note C(40),
+  logged I2 DEFAULT 0,
+  host C(32),
+  content_id I4,
+  appoint T,
+  office I2
 ",
 
 'address_book' => "
