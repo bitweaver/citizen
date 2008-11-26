@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_citizen/edit.php,v 1.2 2008/11/26 08:20:24 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_citizen/edit.php,v 1.3 2008/11/26 15:52:38 lsces Exp $
  *
  * Copyright (c) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -84,7 +84,7 @@ $gBitSmarty->assign( 'textarea_id', 'editwiki' );
 if( empty( $formInfo ) ) {
 	$formInfo = &$gContent->mInfo;
 }
-$formInfo['citizen_type_list'] = $gContent->getCitizensTypeList();
+// $formInfo['citizen_type_list'] = $gContent->getCitizensTypeList();
 $gBitSmarty->assign_by_ref( 'citizenInfo', $formInfo );
 
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );

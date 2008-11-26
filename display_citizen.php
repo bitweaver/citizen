@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_citizen/display_citizen.php,v 1.3 2008/11/26 12:07:25 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_citizen/display_citizen.php,v 1.4 2008/11/26 15:52:38 lsces Exp $
  *
  * Copyright (c) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -22,8 +22,9 @@ $gBitSystem->verifyPackage( 'citizen' );
 $gBitSystem->verifyPermission( 'p_citizen_view' );
 
 if( !empty( $_REQUEST['content_id'] ) ) {
-	$gCitizen = new Citizen($_REQUEST['content_id'],$_REQUEST['content_id']);
-	$gCitizen->loadCitizen();
+	$gCitizen = new Citizen( null, $_REQUEST['content_id'] );
+	$gCitizen->load();
+	$gCitizen->loadXrefList();
 } else {
 	$gCitizen = new Citizen();
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.5 2008/11/26 15:00:37 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.6 2008/11/26 15:52:38 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -61,13 +61,16 @@ class Citizen extends LibertyContent {
 	function load($pContentId = NULL) {
 		if ( $pContentId ) $this->mContentId = (int)$pContentId;
 		if( $this->verifyId( $this->mContentId ) ) {
- 			$query = "select ci.*, lc.*,
+ 			$query = "select ci.*, a.*, n.*, p.*, lc.*,
 				uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 				uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name
 				FROM `".BIT_DB_PREFIX."citizen` ci
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON ( lc.`content_id` = ci.`content_id` )
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
+				LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.usn = ci.usn
+				LEFT JOIN `".BIT_DB_PREFIX."nlpg_blpu` n ON n.`uprn` = ci.`nlpg`
+				LEFT JOIN `".BIT_DB_PREFIX."nlpg_lpi` p ON p.`uprn` = ci.`nlpg` AND p.`language` = 'ENG' AND p.`logical_status` = 1
 				WHERE ci.`content_id`=?";
 			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 
@@ -80,6 +83,10 @@ class Citizen extends LibertyContent {
 				$this->mInfo['creator'] = (isset( $result->fields['creator_real_name'] ) ? $result->fields['creator_real_name'] : $result->fields['creator_user'] );
 				$this->mInfo['editor'] = (isset( $result->fields['modifier_real_name'] ) ? $result->fields['modifier_real_name'] : $result->fields['modifier_user'] );
 				$this->mInfo['display_url'] = $this->getDisplayUrl();
+				$os1 = new OSRef($this->mInfo['x_coordinate'], $this->mInfo['y_coordinate']);
+				$ll1 = $os1->toLatLng();
+				$this->mInfo['prop_lat'] = $ll1->lat;
+				$this->mInfo['prop_lng'] = $ll1->lng;
 			}
 		}
 		LibertyContent::load();
@@ -613,6 +620,36 @@ class Citizen extends LibertyContent {
 			}
 		}
 		return( count( $this->mInfo ) );
+	}
+
+
+	/**
+	 * getXrefList( &$pParamHash );
+	 * Get list of xref records for this citizen record
+	 */
+	function loadXrefList() {
+		if( $this->isValid() && empty( $this->mInfo['xref'] ) ) {
+		
+			$sql = "SELECT x.`last_update_date`, x.`source`, x.`cross_reference` 
+				FROM `".BIT_DB_PREFIX."citizen_xref` x
+				WHERE x.content_id = ?";
+
+			$result = $this->mDb->query( $sql, array( $this->mContentId ) );
+
+			while( $res = $result->fetchRow() ) {
+				$this->mInfo['xref'][] = $res;
+				if ( $res['source'] == 'POSTFIELD' ) $caller[] = $res['cross_reference'];
+			}
+
+			if ( isset( $ticket ) )
+			{ $sql = "SELECT t.* FROM `".BIT_DB_PREFIX."task_ticket` t 
+					WHERE t.caller_id IN(". implode(',', array_fill(0, count($ticket), '?')) ." )";
+				$result = $this->mDb->query( $sql, $ticket );
+				while( $res = $result->fetchRow() ) {
+					$this->mInfo['tickets'][] = $res;
+				}
+			}
+		}
 	}
 
 }
