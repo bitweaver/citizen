@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/edit.tpl,v 1.1 2008/08/27 16:20:01 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/edit.tpl,v 1.2 2008/11/26 14:51:43 lsces Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
@@ -41,13 +41,13 @@
 							{formfeedback warning=`$errors.store`}
 
 							{formlabel label="$conDescr Citizen" for="contentno"}
-							{if !$citizenInfo.contact_id}
+							{if !$citizenInfo.usn}
 								{forminput}
 									New Citizen Entry
 								{/forminput}
 							{else}
 								{forminput}
-									Edit Citizen Entry No : {$citizenInfo.contact_id}
+									Edit Citizen Entry No : {$citizenInfo.usn}
 								{/forminput}
 							{/if}
 
