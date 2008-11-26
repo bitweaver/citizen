@@ -7,6 +7,7 @@
 	{if $gBitUser->hasPermission('p_citizen_admin')}
 		<li><a class="item" href="{$smarty.const.CITIZEN_PKG_URL}load_golden.php">{tr}Load Citizen Index Dump{/tr}</a></li>
 		<li><a class="item" href="{$smarty.const.CITIZEN_PKG_URL}load_golden.php?update=1">{tr}Load Citizen Index Update{/tr}</a></li>
+		<li><a class="item" href="{$smarty.const.CITIZEN_PKG_URL}load_history.php">{tr}Load History Dump{/tr}</a></li>
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=citizen">{tr}Admin citizens{/tr}</a></li>
 	{/if}
 </ul>

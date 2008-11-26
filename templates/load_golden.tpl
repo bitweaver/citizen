@@ -1,6 +1,6 @@
 <div class="load nlpg">
 	<div class="header">
-		<h1>{tr}Loading Rother Golden Data{/tr}</h1>
+		<h1>{tr}Loading Citizen Index Data{/tr}</h1>
 	</div>
 
 	<div class="body">
