@@ -17,8 +17,14 @@ $gBitSystem->verifyPackage( 'citizen' );
 $gBitSystem->verifyPermission('p_citizen_admin' );
 
 $citizens = new Citizen();
+set_time_limit(0);
 
-$citizens->GoldenExpunge();
+if( empty( $_REQUEST["update"] ) ) {
+	$citizens->GoldenExpunge();
+	$update = 0;
+} else {
+	$update = $_REQUEST["update"];
+}
 
 $row = 0;
 
