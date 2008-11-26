@@ -33,7 +33,9 @@ if ( $handle == FALSE) {
 	$row = -999;
 } else {
 	while (($data = fgetcsv($handle, 800, ",")) !== FALSE) {
-    	if ( $row ) $citizens->GoldenRecordLoad( $data );
+    	if ( $row ) {
+    		$citizens->GoldenRecordLoad( $data );
+    	}
     	$row++;
 	}
 	fclose($handle);
@@ -47,7 +49,9 @@ if ( $handle == FALSE) {
 	$row = -999;
 } else {
 	while (($data = fgetcsv($handle, 4000, ",")) !== FALSE) {
-		if ( $row ) $citizens->GoldenXrefRecordLoad( $data );
+		if ( $row ) {
+			$citizens->GoldenXrefRecordLoad( $data );
+		}
     	$row++;
 	} 
 	fclose($handle);
