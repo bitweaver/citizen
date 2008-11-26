@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.4 2008/11/26 12:07:25 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.5 2008/11/26 15:00:37 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -61,14 +61,14 @@ class Citizen extends LibertyContent {
 	function load($pContentId = NULL) {
 		if ( $pContentId ) $this->mContentId = (int)$pContentId;
 		if( $this->verifyId( $this->mContentId ) ) {
-			$query = "select con.*, lc.*,
+ 			$query = "select ci.*, lc.*,
 				uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 				uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name
 				FROM `".BIT_DB_PREFIX."citizen` ci
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON ( lc.`content_id` = ci.`content_id` )
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
-				WHERE lc.`content_id`=?";
+				WHERE ci.`content_id`=?";
 			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 
 			if ( $result && $result->numRows() ) {
@@ -82,7 +82,7 @@ class Citizen extends LibertyContent {
 				$this->mInfo['display_url'] = $this->getDisplayUrl();
 			}
 		}
-		LibertyAttachable::load();
+		LibertyContent::load();
 		return;
 	}
 
@@ -148,7 +148,7 @@ class Citizen extends LibertyContent {
 			// Start a transaction wrapping the whole insert into liberty 
 
 			$this->mDb->StartTrans();
-			if ( LibertyAttachable::store( $pParamHash ) ) {
+			if ( LibertyContent::store( $pParamHash ) ) {
 				$table = BIT_DB_PREFIX."citizen";
 
 				// mContentId will not be set until the secondary data has commited 
@@ -194,7 +194,7 @@ class Citizen extends LibertyContent {
 			$result = $this->mDb->query($query, array($this->mContentId ) );
 			$query = "DELETE FROM `".BIT_DB_PREFIX."citizen_type_map` WHERE `content_id` = ?";
 			$result = $this->mDb->query($query, array($this->mContentId ) );
-			if (LibertyAttachable::expunge() ) {
+			if (LibertyContent::expunge() ) {
 			$ret = TRUE;
 				$this->mDb->CompleteTrans();
 			} else {
@@ -346,25 +346,25 @@ class Citizen extends LibertyContent {
 		$atable = BIT_DB_PREFIX."address_book";
 
 		$usn = 9000000000 + $data[0];
-		$pDataHash['data_store']['content_id'] = $data[0];
-		$pDataHash['data_store']['usn'] = $usn;
+		$pDataHash['citizen_store']['content_id'] = $data[0];
+		$pDataHash['citizen_store']['usn'] = $usn;
 		$pDataHash['address_store']['content_id'] = $data[0];
 		$pDataHash['address_store']['usn'] = $usn;
-		$pDataHash['data_store']['uprn'] = $data[1];
+		$pDataHash['citizen_store']['uprn'] = $data[1];
 		$pDataHash['address_store']['uprn'] = $data[1];
-		$pDataHash['data_store']['prefix'] = $data[2];
-		$pDataHash['data_store']['forename'] = $data[3];
-		$pDataHash['data_store']['surname'] = $data[4];
-		$pDataHash['data_store']['organisation'] = $data[5];
-		$pDataHash['data_store']['opfl'] = $data[6];
-		$pDataHash['data_store']['nino'] = $data[7];
+		$pDataHash['citizen_store']['prefix'] = $data[2];
+		$pDataHash['citizen_store']['forename'] = $data[3];
+		$pDataHash['citizen_store']['surname'] = $data[4];
+		$pDataHash['citizen_store']['organisation'] = $data[5];
+		$pDataHash['citizen_store']['opfl'] = $data[6];
+		$pDataHash['citizen_store']['nino'] = $data[7];
 		if ( $data[8] <> '' ) $date = substr($data[8], 6, 4 ).'-'.substr($data[8], 3, 2 ).'-'.substr($data[8], 0, 2 ); 
 		else $date = NULL;
-		$pDataHash['data_store']['eighteenth'] = $date;
+		$pDataHash['citizen_store']['eighteenth'] = $date;
 		if ( $data[9] <> '' ) $date = substr($data[9], 6, 4 ).'-'.substr($data[9], 3, 2 ).'-'.substr($data[9], 0, 2 );
 		else $date = NULL;
-		$pDataHash['data_store']['dob'] = $date;
-		$pDataHash['data_store']['ctax'] = $data[10];
+		$pDataHash['citizen_store']['dob'] = $date;
+		$pDataHash['citizen_store']['ctax'] = $data[10];
 		$pDataHash['address_store']['organisation'] = $data[11];
 		$pDataHash['address_store']['sao'] = $data[12];
 		$pDataHash['address_store']['pao'] = $data[13];
@@ -374,10 +374,10 @@ class Citizen extends LibertyContent {
 		$pDataHash['address_store']['town'] = $data[17];
 		$pDataHash['address_store']['county'] = $data[18];
 		$pDataHash['address_store']['postcode'] = substr($data[19], 0, 4).' '.substr($data[19], 4, 3);
-		$pDataHash['data_store']['nlpg'] = $data[20];
+		$pDataHash['citizen_store']['nlpg'] = $data[20];
 		if ( $data[21] <> '' ) $date = substr($data[21], 6, 4 ).'-'.substr($data[21], 3, 2 ).'-'.substr($data[21], 0, 2 );
 		else $date[21] = null;
-		$pDataHash['data_store']['last_update_date'] = $date;
+		$pDataHash['citizen_store']['last_update_date'] = $date;
 
 		$query_cant = "SELECT COUNT(ci.`content_id`) FROM `".BIT_DB_PREFIX."citizen` ci
 				WHERE ci.`usn`=?";
@@ -389,23 +389,23 @@ class Citizen extends LibertyContent {
 		  $current = $this->mDb->query( $query_cant, Array( 9000000000 + $data[0] ) );
 		  $cfields = $current->fetchRow();
 		  $save = false;
-		  if ( $pDataHash['data_store']['uprn'] <> $cfields['uprn'] ) $save = true;
-		  if ( $pDataHash['data_store']['nlpg'] <> $cfields['nlpg'] ) $save = true;
-		  if ( $pDataHash['data_store']['prefix'] <> $cfields['prefix'] ) $save = true;
-		  if ( $pDataHash['data_store']['forename'] <> $cfields['forename'] ) $save = true;
-		  if ( $pDataHash['data_store']['surname'] <> $cfields['surname'] ) $save = true;
-		  if ( $pDataHash['data_store']['organisation'] <> $cfields['organisation'] ) $save = true;
-		  if ( $pDataHash['data_store']['opfl'] <> $cfields['opfl'] ) $save = true;
-		  if ( $pDataHash['data_store']['nino'] <> $cfields['nino'] ) $save = true;
-		  if ( $pDataHash['data_store']['ctax'] <> $cfields['ctax'] ) $save = true;
-		  if ( $pDataHash['data_store']['dob'] && $pDataHash['data_store']['dob'] <> $cfields['dob'] ) 
+		  if ( $pDataHash['citizen_store']['uprn'] <> $cfields['uprn'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['nlpg'] <> $cfields['nlpg'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['prefix'] <> $cfields['prefix'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['forename'] <> $cfields['forename'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['surname'] <> $cfields['surname'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['organisation'] <> $cfields['organisation'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['opfl'] <> $cfields['opfl'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['nino'] <> $cfields['nino'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['ctax'] <> $cfields['ctax'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['dob'] && $pDataHash['citizen_store']['dob'] <> $cfields['dob'] ) 
 		  { $save = true;
 		  }
-		  if ( $pDataHash['data_store']['eighteenth'] && $pDataHash['data_store']['eighteenth'] <> $cfields['eighteenth'] ) $save = true;
-		  if ( $pDataHash['data_store']['last_update_date'] && $pDataHash['data_store']['last_update_date'] <> $cfields['last_update_date'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['eighteenth'] && $pDataHash['citizen_store']['eighteenth'] <> $cfields['eighteenth'] ) $save = true;
+		  if ( $pDataHash['citizen_store']['last_update_date'] && $pDataHash['citizen_store']['last_update_date'] <> $cfields['last_update_date'] ) $save = true;
 		  if ( $save ) {
-//		  	$pDataHash['data_store']['last_update_date'] = $this->mDb->now();
-			$result = $this->mDb->associateUpdate( $table, $pDataHash['data_store'], array( "usn" => $usn ) );
+//		  	$pDataHash['citizen_store']['last_update_date'] = $this->mDb->now();
+			$result = $this->mDb->associateUpdate( $table, $pDataHash['citizen_store'], array( "usn" => $usn ) );
 		  }
 		  $save = false;
 		  if ( $pDataHash['address_store']['uprn'] <> $cfields['uprn'] ) $save = true;
@@ -418,14 +418,29 @@ class Citizen extends LibertyContent {
 		  if ( $pDataHash['address_store']['town'] <> $cfields['town'] ) $save = true;
 		  if ( $pDataHash['address_store']['county'] <> $cfields['county'] ) $save = true;
 		  if ( $pDataHash['address_store']['postcode'] <> $cfields['postcode'] ) $save = true;
-		  if ( $save ) {
-			$result = $this->mDb->associateUpdate( $atable, $pDataHash['address_store'], array( "usn" => $usn ) );
+			if ( $save ) {
+				$result = $this->mDb->associateUpdate( $atable, $pDataHash['address_store'], array( "usn" => $usn ) );
 		  }
 		} else {
-		  $result = $this->mDb->associateInsert( $table, $pDataHash['data_store'] );
-		  $result = $this->mDb->associateInsert( $atable, $pDataHash['address_store'] );
+			$this->mDb->StartTrans();
+			$this->mContentId = 0;
+			$pDataHash['content_id'] = 0;
+			if ( LibertyContent::store( $pDataHash ) ) {
+				$pDataHash['citizen_store']['content_id'] = $pDataHash['content_id'];
+				$pDataHash['address_store']['content_id'] = $pDataHash['content_id'];
+				
+				$result = $this->mDb->associateInsert( $table, $pDataHash['citizen_store'] );
+				$result = $this->mDb->associateInsert( $atable, $pDataHash['address_store'] );
+
+				$this->mDb->CompleteTrans();
+			} else {
+				$this->mDb->RollbackTrans();
+				$this->mErrors['store'] = 'Failed to store this citizen.';
+			}				
 		}
+		return( count( $this->mErrors ) == 0 ); 
 	}
+	
 	/**
 	 * GoldenXrefRecordLoad( $data );
 	 * Rother golden xref file import  
