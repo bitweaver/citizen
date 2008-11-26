@@ -7,8 +7,6 @@ $registerHash = array(
 );
 $gBitSystem->registerPackage( $registerHash );
 
-define('CITIZEN_CONTENT_TYPE_GUID', 'citizen' );
-
 if( $gBitSystem->isPackageActive( 'citizen' ) ) {
 	$menuHash = array(
 		'package_name'  => CITIZEN_PKG_NAME,

@@ -1,11 +1,11 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_citizen/Attic/list_contacts.php,v 1.1 2008/08/27 16:20:01 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_citizen/list_citizens.php,v 1.1 2008/11/26 08:20:24 lsces Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 // Initialization
 require_once( '../bit_setup_inc.php' );
-require_once( CONTACTS_PKG_PATH.'Citizen.php' );
+require_once( CITIZEN_PKG_PATH.'Citizen.php' );
 
 $gBitSystem->isPackageActive('citizen', TRUE);
 

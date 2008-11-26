@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.2 2008/10/20 21:40:09 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.3 2008/11/26 08:20:24 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -15,10 +15,12 @@
 require_once( LIBERTY_PKG_PATH.'LibertyContent.php' );		// Citizen base class
 require_once(NLPG_PKG_PATH.'lib/phpcoord-2.3.php' );
 
+define( 'CITIZEN_CONTENT_TYPE_GUID', 'citizen' );
+
 /**
  * @package citizen
  */
-class Citizen extends LibertyConent {
+class Citizen extends LibertyContent {
 	var $mCitizenId;
 	var $mParentId;
 
@@ -42,10 +44,11 @@ class Citizen extends LibertyConent {
 		$this->mCitizenId = (int)$pCitizenId;
 		if ( $pContentId > 9000000000 ) $pContentId = $pContentId - 9000000000;
 		$this->mContentId = (int)$pContentId;
-		$this->mContentTypeGuid = CONTACTS_CONTENT_TYPE_GUID;
+		$this->mContentTypeGuid = CITIZEN_CONTENT_TYPE_GUID;
 				// Permission setup
 		$this->mViewContentPerm  = 'p_citizen_view';
-		$this->mUpdateContentPerm  = 'p_citizen_edit';
+		$this->mCreateContentPerm  = 'p_citizen_create';
+		$this->mUpdateContentPerm  = 'p_citizen_update';
 		$this->mAdminContentPerm = 'p_citizen_admin';
 		
 	}
@@ -71,8 +74,8 @@ class Citizen extends LibertyConent {
 			if ( $result && $result->numRows() ) {
 				$this->mInfo = $result->fields;
 				$this->mContentId = (int)$result->fields['content_id'];
-				$this->mCitizenId = (int)$result->fields['citizen_id'];
-				$this->mParentId = (int)$result->fields['contact_id'];
+				$this->mCitizenId = (int)$result->fields['usn'];
+				$this->mParentId = (int)$result->fields['usn'];
 				$this->mCitizenName = $result->fields['title'];
 				$this->mInfo['creator'] = (isset( $result->fields['creator_real_name'] ) ? $result->fields['creator_real_name'] : $result->fields['creator_user'] );
 				$this->mInfo['editor'] = (isset( $result->fields['modifier_real_name'] ) ? $result->fields['modifier_real_name'] : $result->fields['modifier_user'] );
@@ -135,9 +138,9 @@ class Citizen extends LibertyConent {
 
 	/**
 	* Store citizen data
-	* @param $pParamHash contains all data to store the contact
-	* @param $pParamHash[title] title of the new contact
-	* @param $pParamHash[edit] description of the contact
+	* @param $pParamHash contains all data to store the citizen
+	* @param $pParamHash[title] title of the new citizen
+	* @param $pParamHash[edit] description of the citizen
 	* @return bool TRUE on success, FALSE if store could not occur. If FALSE, $this->mErrors will have reason why
 	**/
 	function store( &$pParamHash ) {
@@ -155,11 +158,11 @@ class Citizen extends LibertyConent {
 					}
 				} else {
 					$pParamHash['citizen_store']['content_id'] = $pParamHash['content_id'];
-					$pParamHash['citizen_store']['contact_id'] = $pParamHash['content_id'];
-					if( isset( $pParamHash['contact_id'] ) && is_numeric( $pParamHash['contact_id'] ) ) {
-						$pParamHash['citizen_store']['contact_id'] = $pParamHash['contact_id'];
+					$pParamHash['citizen_store']['usn'] = $pParamHash['content_id'];
+					if( isset( $pParamHash['citizen_id'] ) && is_numeric( $pParamHash['citizen_id'] ) ) {
+						$pParamHash['citizen_store']['usn'] = $pParamHash['citizen_id'];
 					} else {
-						$pParamHash['citizen_store']['contact_id'] = $this->mDb->GenID( 'contact_id_seq');
+						$pParamHash['citizen_store']['usn'] = $this->mDb->GenID( 'citizen_id_seq');
 					}	
 
 					$pParamHash['citizen_store']['parent_id'] = $pParamHash['citizen_store']['content_id'];
@@ -173,7 +176,7 @@ class Citizen extends LibertyConent {
 				$this->mDb->CompleteTrans();
 			} else {
 				$this->mDb->RollbackTrans();
-				$this->mErrors['store'] = 'Failed to store this contact.';
+				$this->mErrors['store'] = 'Failed to store this citizen.';
 			}
 		}
 		return( count( $this->mErrors ) == 0 );
@@ -484,18 +487,18 @@ class Citizen extends LibertyConent {
 		extract( $pParamHash );
 
 		if( isset( $find_org ) and is_string( $find_org ) and $find_org <> '' ) {
-			$whereSql .= " AND UPPER( c.`organisation` ) like ? ";
+			$whereSql .= " AND UPPER( ci.`organisation` ) like ? ";
 			$bindVars[] = '%' . strtoupper( $find_org ). '%';
 			$type = 'organisation';
 			$pParamHash["listInfo"]["ihash"]["find_org"] = $find_org;
 		}
 		if( isset( $find_name ) and is_string( $find_name ) and $find_name <> '' ) {
 		    $split = preg_split('|[,. ]|', $find_name, 2);
-			$whereSql .= " AND UPPER( c.`surname` ) STARTING ? ";
+			$whereSql .= " AND UPPER( ci.`surname` ) STARTING ? ";
 			$bindVars[] = strtoupper( $split[0] );
 		    if ( array_key_exists( 1, $split ) ) {
 				$split[1] = trim( $split[1] );
-				$whereSql .= " AND UPPER( c.`forename` ) STARTING ? ";
+				$whereSql .= " AND UPPER( ci.`forename` ) STARTING ? ";
 				$bindVars[] = strtoupper( $split[1] );
 			}
 			$pParamHash["listInfo"]["ihash"]["find_name"] = $find_name;
@@ -510,18 +513,18 @@ class Citizen extends LibertyConent {
 			$bindVars[] = '%' . strtoupper( $find_postcode ). '%';
 			$pParamHash["listInfo"]["ihash"]["find_postcode"] = $find_postcode;
 		}
-		$query = "SELECT c.*, a.UPRN, a.POSTCODE, a.SAO, a.PAO, a.NUMBER, a.STREET, a.LOCALITY, a.TOWN, a.COUNTY, c.parent_id as uprn,
-			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."citizen_xref` x WHERE x.content_id = c.content_id ) AS links, 
-			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."task_ticket` e WHERE e.usn = c.usn ) AS enquiries $selectSql 
+		$query = "SELECT ci.*, a.UPRN, a.POSTCODE, a.SAO, a.PAO, a.NUMBER, a.STREET, a.LOCALITY, a.TOWN, a.COUNTY, ci.parent_id as uprn,
+			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."citizen_xref` x WHERE x.content_id = ci.content_id ) AS links, 
+			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."task_ticket` e WHERE e.caller_id = ci.usn ) AS enquiries $selectSql 
 			FROM `".BIT_DB_PREFIX."citizen` ci 
 			LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = ci.content_id $findSql
 			$joinSql 
-			WHERE c.`".$type."` <> '' $whereSql ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
+			WHERE ci.`".$type."` <> '' $whereSql ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
 		$query_cant = "SELECT COUNT( * )
 			FROM `".BIT_DB_PREFIX."citizen` ci
 			LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = ci.content_id $findSql
-			$joinSql WHERE c.`".$type."` <> '' $whereSql ";
-//			INNER JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = c.content_id 
+			$joinSql WHERE ci.`".$type."` <> '' $whereSql ";
+//			INNER JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = ci.content_id 
 		$result = $this->mDb->query( $query, $bindVars, $max_records, $offset );
 		$ret = array();
 		while( $res = $result->fetchRow() ) {
@@ -543,7 +546,7 @@ class Citizen extends LibertyConent {
 	 */
 	function loadCitizen( &$pParamHash = NULL ) {
 		if( $this->isValid() ) {
-		$sql = "SELECT c.*, a.*, n.*, p.*
+		$sql = "SELECT ci.*, a.*, n.*, p.*
 			FROM `".BIT_DB_PREFIX."citizen` ci 
 			LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.usn = ci.usn
 			LEFT JOIN `".BIT_DB_PREFIX."nlpg_blpu` n ON n.`uprn` = ci.`nlpg`
@@ -559,7 +562,7 @@ class Citizen extends LibertyConent {
 
 					$sql = "SELECT x.`last_update_date`, x.`source`, x.`cross_reference`, 
 							CASE
-							WHEN x.`source` = 'POSTFIELD' THEN (SELECT `USN` FROM `".BIT_DB_PREFIX."caller` c WHERE c.`caller_id` = x.`cross_reference`)
+							WHEN x.`source` = 'POSTFIELD' THEN (SELECT `USN` FROM `".BIT_DB_PREFIX."caller` c WHERE ci.`caller_id` = x.`cross_reference`)
 							ELSE '' END AS USN 
 							FROM `".BIT_DB_PREFIX."citizen_xref` x
 							WHERE x.content_id = ?";

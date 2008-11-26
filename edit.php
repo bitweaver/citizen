@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_citizen/edit.php,v 1.1 2008/08/27 16:20:01 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_citizen/edit.php,v 1.2 2008/11/26 08:20:24 lsces Exp $
  *
  * Copyright (c) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -17,9 +17,9 @@ require_once( '../bit_setup_inc.php' );
 
 $gBitSystem->verifyPackage( 'citizen' );
 
-$gBitSystem->verifyPermission( 'p_citizen_edit' );
+$gBitSystem->verifyPermission( 'p_citizen_update' );
 
-include_once( CONTACTS_PKG_PATH.'Citizen.php' );
+include_once( CITIZEN_PKG_PATH.'Citizen.php' );
 
 $gContent = new Citizen();
 
