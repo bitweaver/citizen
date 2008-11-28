@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.8 2008/11/26 21:13:46 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.9 2008/11/28 11:54:51 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -449,235 +449,34 @@ class Citizen extends LibertyContent {
 	}
 	
 	/**
-	 * TicketRecordLoad( $data );
-	 * Ticket file import  
+	 * GoldenXrefRecordLoad( $data );
+	 * Rother golden xref file import  
 	 */
-	function TicketRecordLoad( &$data ) {
-		$table = BIT_DB_PREFIX."task_ticket";
+	function GoldenXrefRecordLoad( &$data ) {
+		$table = BIT_DB_PREFIX."citizen_xref";
 		
-		$pDataHash['data_store']['office'] = $data[0];
-		$pDataHash['data_store']['ticket_id'] = $data[1];
-		$pDataHash['data_store']['ticket_ref'] = $data[2];
-		$pDataHash['data_store']['ticket_no'] = $data[3];
-		$pDataHash['data_store']['tags'] = $data[4];
-		$pDataHash['data_store']['clearance'] = $data[5];
-		$pDataHash['data_store']['room'] = $data[6];
-		if ( $data[7] == '[null]' )
-			$pDataHash['data_store']['note'] = '';
-		else
-			$pDataHash['data_store']['note'] = $data[7];
-		if ( $data[8] == '[null]' )
-			$pDataHash['data_store']['last'] = '';
-		else
-			$pDataHash['data_store']['last'] = $data[8];
-		$pDataHash['data_store']['staff_id'] = $data[9];
-		$pDataHash['data_store']['init_id'] = $data[10];
-		$pDataHash['data_store']['caller_id'] = $data[11];
-		$pDataHash['data_store']['appoint_id'] = $data[12];
-		$pDataHash['data_store']['applet'] = $data[13];
-		if ( $data[14] != '[null]' ) $pDataHash['data_store']['memo'] = $data[14];
-		if ( $data[15] == '[null]' )
-			$pDataHash['data_store']['department'] = 0;
-		else
-			$pDataHash['data_store']['department'] = $data[15];
-		$result = $this->mDb->associateInsert( $table, $pDataHash['data_store'] );
-	}
-
-	/**
-	 * TransactionRecordLoad( $data );
-	 * Transaction file import  
-	 */
-	function TransactionRecordLoad( &$data ) {
-		$table = BIT_DB_PREFIX."task_transaction";
-		
-		$pDataHash['data_store']['ticket_id'] = $data[0];
-		$pDataHash['data_store']['transact_no'] = $data[1];
-		$pDataHash['data_store']['transact'] = $data[2];
-		$pDataHash['data_store']['ticket_ref'] = $data[3];
-		$pDataHash['data_store']['staff_id'] = $data[4];
-		$pDataHash['data_store']['previous'] = $data[5];
-		$pDataHash['data_store']['room'] = $data[6];
-		$pDataHash['data_store']['applet'] = $data[7];
-		$pDataHash['data_store']['office'] = $data[8];
-		$pDataHash['data_store']['ticket_no'] = $data[9];
-		if ( $data[10] == '[null]' )
-			$pDataHash['data_store']['proom'] = 0;
-		else
-			$pDataHash['data_store']['proom'] = $data[10];
-		if ( $data[11] == '[null]' )
-			$pDataHash['data_store']['tags'] = 0;
-		else
-			$pDataHash['data_store']['tags'] = $data[11];
-		if ( $data[12] == '[null]' )
-			$pDataHash['data_store']['clearance'] = 0;
-		else
-			$pDataHash['data_store']['clearance'] = $data[12];
-		$result = $this->mDb->associateInsert( $table, $pDataHash['data_store'] );
-	}
-
-	/**
-	 * ReasonRecordLoad( $data );
-	 * Reason file import  
-	 */
-	function ReasonRecordLoad( &$data ) {
-		$table = BIT_DB_PREFIX."task_reason";
-		
-		$pDataHash['data_store']['reason'] = $data[0];
-		$pDataHash['data_store']['title'] = $data[1];
-		$pDataHash['data_store']['reason_type'] = $data[2];
-		$pDataHash['data_store']['reason_source'] = $data[3];
-		if ( $data[4] == '[null]' )
-			$pDataHash['data_store']['tag'] = '';
-		else
-			$pDataHash['data_store']['tag'] = $data[4];
-		$result = $this->mDb->associateInsert( $table, $pDataHash['data_store'] );
-	}
-
-	/**
-	 * RoomstatRecordLoad( $data );
-	 * Roomstat file import  
-	 */
-	function RoomstatRecordLoad( &$data ) {
-		$table = BIT_DB_PREFIX."task_roomstat";
-		
-		$pDataHash['data_store']['office'] = $data[0];
-		$pDataHash['data_store']['terminal'] = $data[1];
-		$pDataHash['data_store']['title'] = $data[2];
-		if ( $data[3] == '[null]' )
-			$pDataHash['data_store']['head'] = '';
-		else
-			$pDataHash['data_store']['head'] = $data[3];
-		if ( $data[4] == '[null]' )
-			$pDataHash['data_store']['announce'] = '';
-		else
-			$pDataHash['data_store']['announce'] = $data[4];
-		$pDataHash['data_store']['ter_type'] = $data[5];
-		$pDataHash['data_store']['led'] = $data[6];
-		if ( $data[7] != '[null]' ) $pDataHash['data_store']['ledhead'] = $data[7];
-		if ( $data[8] != '[null]' ) $pDataHash['data_store']['beacon'] = $data[8];
-		if ( $data[9] != '[null]' ) $pDataHash['data_store']['camera'] = $data[9];
-		if ( $data[10] != '[null]' ) $pDataHash['data_store']['serving'] = $data[10];
-		if ( $data[11] != '[null]' ) $pDataHash['data_store']['act1'] = $data[11];
-		if ( $data[12] != '[null]' ) $pDataHash['data_store']['fro_'] = $data[12];
-		if ( $data[13] != '[null]' ) $pDataHash['data_store']['alarm'] = $data[13];
-		if ( $data[14] != '[null]' ) $pDataHash['data_store']['curmode'] = $data[14];
-		if ( $data[15] != '[null]' ) $pDataHash['data_store']['x1'] = $data[15];
-		if ( $data[16] != '[null]' ) $pDataHash['data_store']['x2'] = $data[16];
-		if ( $data[17] != '[null]' ) $pDataHash['data_store']['x3'] = $data[17];
-		if ( $data[18] != '[null]' ) $pDataHash['data_store']['x4'] = $data[18];
-		if ( $data[19] != '[null]' ) $pDataHash['data_store']['x5'] = $data[19];
-		if ( $data[20] != '[null]' ) $pDataHash['data_store']['x6'] = $data[20];
-		if ( $data[21] != '[null]' ) $pDataHash['data_store']['x7'] = $data[21];
-		if ( $data[22] != '[null]' ) $pDataHash['data_store']['x8'] = $data[22];
-		if ( $data[23] != '[null]' ) $pDataHash['data_store']['x9'] = $data[23];
-		if ( $data[24] != '[null]' ) $pDataHash['data_store']['x10'] = $data[24];
-		if ( $data[25] != '[null]' ) $pDataHash['data_store']['status'] = $data[25];
-		if ( $data[26] != '[null]' ) $pDataHash['data_store']['logon'] = $data[26];
-		if ( $data[27] != '[null]' ) $pDataHash['data_store']['ter_location'] = $data[27];
-		if ( $data[28] != '[null]' ) $pDataHash['data_store']['ticketprint'] = $data[28];
-		if ( $data[29] != '[null]' ) $pDataHash['data_store']['reportprint'] = $data[29];
-		if ( $data[30] != '[null]' ) $pDataHash['data_store']['booking'] = $data[30];
-		if ( $data[31] != '[null]' ) $pDataHash['data_store']['book'] = $data[31];
-		$result = $this->mDb->associateInsert( $table, $pDataHash['data_store'] );
-	}
-
-	/**
-	 * ReasonRecordLoad( $data );
-	 * Reason file import  
-	 */
-	function CallerRecordLoad( &$data ) {
-		$table = BIT_DB_PREFIX."task_caller";
-		
-		$pDataHash['data_store']['caller_id'] = $data[0];
-		if ( $data[1] == '[null]' )
-			$pDataHash['data_store']['cltype'] = 0;
-		else
-			$pDataHash['data_store']['cltype'] = $data[1];
-		$pDataHash['data_store']['title'] = $data[2];
-		$pDataHash['data_store']['surname'] = $data[3];
-		$pDataHash['data_store']['forename'] = $data[4];
-		$pDataHash['data_store']['company'] = $data[5];
-		if ( $data[6] == '[null]' )
-			$pDataHash['data_store']['ni'] = '';
-		else
-			$pDataHash['data_store']['ni'] = $data[6];
-		if ( $data[7] == '[null]' )
-			$pDataHash['data_store']['hbis'] = '';
-		else
-			$pDataHash['data_store']['hbis'] = $data[7];
-		$pDataHash['data_store']['address'] = $data[8];
-		$pDataHash['data_store']['postcode'] = $data[9];
-		if ( $data[10] != '[null]' ) $pDataHash['data_store']['lastvisit'] = $data[10];
-		if ( $data[11] == '[null]' )
-			$pDataHash['data_store']['specialneeds'] = '';
-		else
-			$pDataHash['data_store']['specialneeds'] = $data[11];
-		if ( $data[12] == '[null]' )
-			$pDataHash['data_store']['staff_id'] = 0;
-		else
-			$pDataHash['data_store']['staff_id'] = $data[12];
-		if ( $data[13] == '[null]' )
-			$pDataHash['data_store']['note'] = '';
-		else
-			$pDataHash['data_store']['note'] = $data[13];
-		if ( $data[14] != '[null]' ) $pDataHash['data_store']['memo'] = $data[14];
-		if ( $data[15] != '[null]' ) $pDataHash['data_store']['cllink'] = $data[15];
-		if ( $data[16] == '[null]' )
-			$pDataHash['data_store']['usn'] = 0;
-		else
-			$pDataHash['data_store']['usn'] = $data[16];
-		$result = $this->mDb->associateInsert( $table, $pDataHash['data_store'] );
-	}
-
-	/**
-	 * StaffRecordLoad( $data );
-	 * Staff file import  
-	 */
-	function StaffRecordLoad( &$data ) {
-		$table = BIT_DB_PREFIX."task_staff";
-		
-		$pDataHash['data_store']['staff_id'] = $data[0];
-		$pDataHash['data_store']['surname'] = $data[1];
-		$pDataHash['data_store']['forename'] = $data[2];
-		$pDataHash['data_store']['initials'] = $data[3];
-		if ( $data[4] == '[null]' )
-			$pDataHash['data_store']['direct'] = '';
-		else
-			$pDataHash['data_store']['direct'] = $data[4];
-		$pDataHash['data_store']['team'] = $data[5];
-		if ( $data[6] == '[null]' )
-			$pDataHash['data_store']['ext'] = '';
-		else
-			$pDataHash['data_store']['ext'] = $data[6];
-		$pDataHash['data_store']['category'] = $data[7];
-		$pDataHash['data_store']['logon'] = $data[8];
-		if ( $data[9] == '[null]' )
-			$pDataHash['data_store']['note'] = '';
-		else
-			$pDataHash['data_store']['note'] = $data[9];
-		$pDataHash['data_store']['logged'] = 0;
-		$pDataHash['data_store']['content_id'] = 0;
-		$pDataHash['data_store']['office'] = $data[14];
+		$pDataHash['data_store']['content_id'] = $data[0];
+		$pDataHash['data_store']['xref_key'] = $data[0];
+		$pDataHash['data_store']['source'] = $data[1];
+		$pDataHash['data_store']['cross_reference'] = $data[2];
+		$pDataHash['data_store']['data'] = $data[3];
+		$pDataHash['data_store']['start_date'] = $this->mDb->NOW();
+		$pDataHash['data_store']['last_update_date'] = $this->mDb->NOW();
+		$pDataHash['data_store']['entry_date'] = $this->mDb->NOW();
 		$result = $this->mDb->associateInsert( $table, $pDataHash['data_store'] );
 	}
 
 	/**
 	 * Delete golden object and all related records
 	 */
-	function HistoryExpunge()
+	function GoldenExpunge()
 	{
 		$ret = FALSE;
-		$query = "DELETE FROM `".BIT_DB_PREFIX."task_ticket`";
+		$query = "DELETE FROM `".BIT_DB_PREFIX."citizen`";
 		$result = $this->mDb->query( $query );
-		$query = "DELETE FROM `".BIT_DB_PREFIX."task_transaction`";
+		$query = "DELETE FROM `".BIT_DB_PREFIX."address_book`";
 		$result = $this->mDb->query( $query );
-		$query = "DELETE FROM `".BIT_DB_PREFIX."task_reason`";
-		$result = $this->mDb->query( $query );
-		$query = "DELETE FROM `".BIT_DB_PREFIX."task_roomstat`";
-		$result = $this->mDb->query( $query );
-		$query = "DELETE FROM `".BIT_DB_PREFIX."task_caller`";
-		$result = $this->mDb->query( $query );
-		$query = "DELETE FROM `".BIT_DB_PREFIX."task_staff`";
+		$query = "DELETE FROM `".BIT_DB_PREFIX."citizen_xref`";
 		$result = $this->mDb->query( $query );
 		return $ret;
 	}
