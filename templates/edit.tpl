@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/edit.tpl,v 1.2 2008/11/26 14:51:43 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/edit.tpl,v 1.3 2009/01/21 05:25:37 lsces Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
@@ -148,13 +148,13 @@
 				{jstab title="Liberty Extensions"}
 					{if $serviceEditTpls.categorization }
 						{legend legend="Categorize"}
-							{include file=$serviceEditTpls.categorization"}
+							{include file=$serviceEditTpls.categorization}
 						{/legend}
 					{/if}
 				{/jstab}
 			{/jstabs}
 
-			{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
+			{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_mini_tpl"}
 
 			<div class="row submit">
 				<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
