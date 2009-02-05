@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/list_citizen.tpl,v 1.1 2008/08/27 16:20:01 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/list_citizen.tpl,v 1.2 2009/02/05 19:53:18 lsces Exp $ *}
 <div class="floaticon">
 	{if $gBitUser->hasPermission('p_citizen_admin')}
 		<a title="{tr}configure listing{/tr}" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=citizen">{biticon ipackage="icons" iname="document-properties" iexplain="configure"}</a>
@@ -116,6 +116,6 @@
 
 </div><!-- end .body -->
 
-{pagination_c}
+{libertypagination}
 
 </div> {* end .admin *}
