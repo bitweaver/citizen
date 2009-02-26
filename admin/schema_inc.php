@@ -55,7 +55,7 @@ $tables = array(
   type_value	I4
 ",
 
-'address_book' => "
+'citizen_address' => "
   content_id I8 PRIMARY,
   usn I8,
   uprn I8,
