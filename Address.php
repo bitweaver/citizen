@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Address.php,v 1.2 2008/11/26 08:20:24 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Address.php,v 1.3 2009/03/06 07:54:11 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -50,7 +50,7 @@ class Address extends LibertyContent {
 				$whereSql = " AND `customers_id`=?";
 				array_push( $bindVars, $this->mCustomerId );
 			}
-			$query = "SELECT * FROM `".BIT_DB_PREFIX."address_book` WHERE `address_book_id`=? $whereSql";
+			$query = "SELECT * FROM `".BIT_DB_PREFIX."citizen_address` WHERE `citizen_address_id`=? $whereSql";
 			if( $rs = $this->mDb->query( $query, $bindVars ) ) {
 				$ret = $rs->fields;
 			}
@@ -154,7 +154,7 @@ class Address extends LibertyContent {
 			$process = true;
 			if( empty( $pParamHash['address'] ) ) {
 				$pParamHash['address'] = $this->mDb->GenID( 'citizen_id_seq');
-				$this->mDb->associateInsert(`".BIT_DB_PREFIX."address_book`, $pParamHash['address_store']);
+				$this->mDb->associateInsert(`".BIT_DB_PREFIX."citizen_address`, $pParamHash['address_store']);
 			} else {
 				if( !empty( $pParamHash['force_history'] ) || ( empty( $pParamHash['minor'] ) && !empty( $this->mInfo['version'] ) && $pParamHash['field_changed'] )) {
 					if( empty( $pParamHash['has_no_history'] ) ) {
@@ -164,7 +164,7 @@ class Address extends LibertyContent {
 //					$action = "Created";
 //					$mailEvents = 'wiki_page_changes';
 				}
-				$this->mDb->associateUpdate(`".BIT_DB_PREFIX."address_book`, $pParamHash['address_store'], array( 'address_book_id'=>$pParamHash['address'] ) );
+				$this->mDb->associateUpdate(`".BIT_DB_PREFIX."citizen_address`, $pParamHash['address_store'], array( 'citizen_address_id'=>$pParamHash['address'] ) );
 			}
 			if( !$this->getDefaultAddress() || !empty( $pParamHash['primary'] ) ) {
 				$this->setDefaultAddress( $pParamHash['address'] );
@@ -213,7 +213,7 @@ class Address extends LibertyContent {
 		global $gBitDb;
 		$ret = FALSE;
 		if( is_numeric( $pAddressId ) ) {
-			$query = "SELECT count(*) FROM `".BIT_DB_PREFIX."address_book` WHERE `address_book_id`=?";
+			$query = "SELECT count(*) FROM `".BIT_DB_PREFIX."citizen_address` WHERE `citizen_address_id`=?";
 			$ret = $gBitDb->GetOne( $query, array( $pAddressId ) );
 		}
 		return $ret;
@@ -247,8 +247,8 @@ class Address extends LibertyContent {
 	function isAddressOwner( $pAddressId ) {
 		$ret = FALSE;
 		if( is_numeric( $pAddressId ) ) {
-			$query = "select count(*) as `total` from `".BIT_DB_PREFIX."address_book`
-					  where `customers_id` = ? and `address_book_id` = ?";
+			$query = "select count(*) as `total` from `".BIT_DB_PREFIX."citizen_address`
+					  where `customers_id` = ? and `citizen_address_id` = ?";
 			$ret = $this->mDb->getOne( $query, array( $this->mCustomerId, $pAddressId ) );
 		}
 		return $ret;
@@ -263,12 +263,12 @@ class Address extends LibertyContent {
 	function getAddresses( $pCustomerId ) {
 		$ret = NULL;
 		if( is_numeric( $pCustomerId ) ) {
-			$query = "select `address_book_id`, `entry_firstname` as `firstname`, `entry_lastname` as `lastname`,
+			$query = "select `citizen_address_id`, `entry_firstname` as `firstname`, `entry_lastname` as `lastname`,
 								`entry_company` as `company`, `entry_street_address` as `street_address`,
 								`entry_suburb` as `suburb`, `entry_city` as `city`, `entry_postcode` as `postcode`,
 								`entry_state` as `state`, `entry_zone_id` as `zone_id`,
 								`entry_country_id` as `country_id`, c.*
-						from `".BIT_DB_PREFIX."address_book` ab INNER JOIN `".BIT_DB_PREFIX."countries` c ON( ab.`entry_country_id`=c.`countries_id` )
+						from `".BIT_DB_PREFIX."citizen_address` ab INNER JOIN `".BIT_DB_PREFIX."countries` c ON( ab.`entry_country_id`=c.`countries_id` )
 						where `customers_id` = ?";
 				if( $rs = $this->mDb->query( $query, array( $pCustomerId ) ) ) {
 				$ret = $rs->GetRows();

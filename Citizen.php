@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.9 2008/11/28 11:54:51 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.10 2009/03/06 07:54:11 lsces Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -68,7 +68,7 @@ class Citizen extends LibertyContent {
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON ( lc.`content_id` = ci.`content_id` )
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
-				LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.usn = ci.usn
+				LEFT JOIN `".BIT_DB_PREFIX."citizen_address` a ON a.usn = ci.usn
 				LEFT JOIN `".BIT_DB_PREFIX."nlpg_blpu` n ON n.`uprn` = ci.`nlpg`
 				LEFT JOIN `".BIT_DB_PREFIX."nlpg_lpi` p ON p.`uprn` = ci.`nlpg` AND p.`language` = 'ENG' AND p.`logical_status` = 1
 				WHERE ci.`content_id`=?";
@@ -350,7 +350,7 @@ class Citizen extends LibertyContent {
 	 */
 	function GoldenRecordLoad( &$data ) {
 		$table = BIT_DB_PREFIX."citizen";
-		$atable = BIT_DB_PREFIX."address_book";
+		$atable = BIT_DB_PREFIX."citizen_address";
 
 		$usn = 9000000000 + $data[0];
 		$pDataHash['citizen_store']['content_id'] = $data[0];
@@ -474,7 +474,7 @@ class Citizen extends LibertyContent {
 		$ret = FALSE;
 		$query = "DELETE FROM `".BIT_DB_PREFIX."citizen`";
 		$result = $this->mDb->query( $query );
-		$query = "DELETE FROM `".BIT_DB_PREFIX."address_book`";
+		$query = "DELETE FROM `".BIT_DB_PREFIX."citizen_address`";
 		$result = $this->mDb->query( $query );
 		$query = "DELETE FROM `".BIT_DB_PREFIX."citizen_xref`";
 		$result = $this->mDb->query( $query );
@@ -539,14 +539,14 @@ class Citizen extends LibertyContent {
 			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."citizen_xref` x WHERE x.content_id = ci.content_id ) AS links, 
 			(SELECT COUNT(*) FROM `".BIT_DB_PREFIX."task_ticket` e WHERE e.usn = ci.usn ) AS enquiries $selectSql 
 			FROM `".BIT_DB_PREFIX."citizen` ci 
-			LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = ci.content_id $findSql
+			LEFT JOIN `".BIT_DB_PREFIX."citizen_address` a ON a.content_id = ci.content_id $findSql
 			$joinSql 
 			WHERE ci.`".$type."` <> '' $whereSql ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
 		$query_cant = "SELECT COUNT( * )
 			FROM `".BIT_DB_PREFIX."citizen` ci
-			LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = ci.content_id $findSql
+			LEFT JOIN `".BIT_DB_PREFIX."citizen_address` a ON a.content_id = ci.content_id $findSql
 			$joinSql WHERE ci.`".$type."` <> '' $whereSql ";
-//			INNER JOIN `".BIT_DB_PREFIX."address_book` a ON a.content_id = ci.content_id 
+//			INNER JOIN `".BIT_DB_PREFIX."citizen_address` a ON a.content_id = ci.content_id 
 		$result = $this->mDb->query( $query, $bindVars, $max_records, $offset );
 		$ret = array();
 		while( $res = $result->fetchRow() ) {
@@ -570,7 +570,7 @@ class Citizen extends LibertyContent {
 		if( $this->isValid() ) {
 		$sql = "SELECT ci.*, a.*, n.*, p.*
 			FROM `".BIT_DB_PREFIX."citizen` ci 
-			LEFT JOIN `".BIT_DB_PREFIX."address_book` a ON a.usn = ci.usn
+			LEFT JOIN `".BIT_DB_PREFIX."citizen_address` a ON a.usn = ci.usn
 			LEFT JOIN `".BIT_DB_PREFIX."nlpg_blpu` n ON n.`uprn` = ci.`nlpg`
 			LEFT JOIN `".BIT_DB_PREFIX."nlpg_lpi` p ON p.`uprn` = ci.`nlpg` AND p.`language` = 'ENG' AND p.`logical_status` = 1
 			WHERE ci.`content_id` = ?";
@@ -643,10 +643,11 @@ class Citizen extends LibertyContent {
 
 			$sql = "SELECT t.* FROM `".BIT_DB_PREFIX."task_ticket` t 
 				WHERE t.usn = ?";
-			$result = $this->mDb->query( $sql, array( $this->mCitizenId ) );
+			$result = $this->mDb->query( $sql, array( '9000000001' ) ); //$this->mCitizenId ) );
 			while( $res = $result->fetchRow() ) {
 				$this->mInfo['tickets'][] = $res;
 			}
+
 		}
 	}
 
