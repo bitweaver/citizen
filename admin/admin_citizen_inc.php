@@ -1,9 +1,9 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_citizen/admin/admin_citizen_inc.php,v 1.1 2008/08/27 16:20:01 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_citizen/admin/admin_citizen_inc.php,v 1.2 2009/10/01 13:45:33 wjames5 Exp $
 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 
 include_once( CITIZEN_PKG_PATH.'Citizen.php' );
 
