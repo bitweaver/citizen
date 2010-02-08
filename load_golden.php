@@ -7,7 +7,7 @@
  */
 
 // Initialization
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 require_once( CITIZEN_PKG_PATH.'Citizen.php' );
 
 // Is package installed and enabled
