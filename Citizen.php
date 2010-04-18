@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.12 2009/10/01 14:16:59 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_citizen/Citizen.php,v 1.13 2010/04/18 02:27:23 wjames5 Exp $
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -35,7 +35,7 @@ class Citizen extends LibertyContent {
 		LibertyContent::LibertyContent();
 		$this->registerContentType( CITIZEN_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => CITIZEN_CONTENT_TYPE_GUID,
-				'content_description' => 'Citizen Entry',
+				'content_name' => 'Citizen Entry',
 				'handler_class' => 'Citizen',
 				'handler_package' => 'citizen',
 				'handler_file' => 'Citizen.php',
@@ -264,8 +264,8 @@ class Citizen extends LibertyContent {
 
 		if( !empty( $pHash['title'] ) ) {
 			$ret = "Citizen - ".$this->mInfo['title'];
-		} elseif( !empty( $pHash['content_description'] ) ) {
-			$ret = $pHash['content_description'];
+		} elseif( !empty( $pHash['content_name'] ) ) {
+			$ret = $pHash['content_name'];
 		}
 		return $ret;
 	}
