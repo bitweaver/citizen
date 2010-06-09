@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_citizen/Address.php,v 1.5 2009/10/01 14:16:59 wjames5 Exp $
+ * @version $Header$
  *
  * Copyright ( c ) 2006 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.

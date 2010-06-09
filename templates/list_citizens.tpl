@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/list_citizens.tpl,v 1.2 2010/02/09 17:21:21 wjames5 Exp $ *}
+{* $Header$ *}
 <div class="floaticon">
 	{if $gBitUser->hasPermission('p_citizen_admin')}
 		<a title="{tr}configure listing{/tr}" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=citizen">{biticon ipackage="icons" iname="document-properties" iexplain="configure"}</a>

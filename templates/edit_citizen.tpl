@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/edit_citizen.tpl,v 1.1 2008/08/27 16:20:01 lsces Exp $ *}
+{* $Header$ *}
 {popup_init src="`$gBitLoc.THEMES_PKG_URL`overlib.js"}
 {strip}
 <div class="floaticon">{bithelp}</div>

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_citizen/templates/citizen.tpl,v 1.1 2008/08/27 16:20:01 lsces Exp $ *}
+{* $Header$ *}
 
 <div class="floaticon">
 {if $gContent->hasAdminPermission()}
