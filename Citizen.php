@@ -218,13 +218,12 @@ class Citizen extends LibertyContent {
 	 * @param array different possibilities depending on derived class
 	 * @return string the link to display the page.
 	 */
-	function getDisplayUrl( $pContentId=NULL ) {
-		global $gBitSystem;
-		if( empty( $pContentId ) ) {
-			$pContentId = $this->mContentId;
+	function getDisplayUrlFromHash( $pHash ) {
+		$ret = NULL;
+		if( !empty( $pHash['content_id'] ) ) {
+			$ret = CITIZEN_PKG_URL.'index.php?content_id='.$pHash['content_id'];
 		}
-
-		return CITIZEN_PKG_URL.'index.php?content_id='.$pContentId;
+		return $ret;
 	}
 
 	/**
@@ -238,9 +237,9 @@ class Citizen extends LibertyContent {
 		if ( $this->mContentId != $aux['content_id'] ) $this->load($aux['content_id']);
 
 		if (empty($this->mInfo['content_id']) ) {
-			$ret = '<a href="'.$this->getDisplayUrl($aux['content_id']).'">'.$aux['title'].'</a>';
+			$ret = '<a href="'.$this->getDisplayUrlFromHash( $aux ).'">'.$aux['title'].'</a>';
 		} else {
-			$ret = '<a href="'.$this->getDisplayUrl($aux['content_id']).'">'."Citizen - ".$this->mInfo['title'].'</a>';
+			$ret = '<a href="'.$this->getDisplayUrlFromHash( $aux ).'">'."Citizen - ".$this->mInfo['title'].'</a>';
 		}
 		return $ret;
 	}
@@ -318,7 +317,7 @@ class Citizen extends LibertyContent {
 		$this->mDb->CompleteTrans();
 
 		while ($res = $result->fetchRow()) {
-			$res['citizen_url'] = $this->getDisplayUrl( $res['content_id'] );
+			$res['citizen_url'] = $this->getDisplayUrlFromHash( $res );
 			$ret[] = $res;
 		}
 
