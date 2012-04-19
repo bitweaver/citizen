@@ -218,7 +218,7 @@ class Citizen extends LibertyContent {
 	 * @param array different possibilities depending on derived class
 	 * @return string the link to display the page.
 	 */
-	function getDisplayUrlFromHash( $pHash ) {
+	public static function getDisplayUrlFromHash( $pHash ) {
 		$ret = NULL;
 		if( !empty( $pHash['content_id'] ) ) {
 			$ret = CITIZEN_PKG_URL.'index.php?content_id='.$pHash['content_id'];
