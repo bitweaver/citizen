@@ -32,7 +32,7 @@ class Citizen extends LibertyContent {
 	 * @param integer Base content_id identifier 
 	 */
 	function Citizen( $pCitizenId = NULL, $pContentId = NULL ) {
-		LibertyContent::LibertyContent();
+		parent::__construct();
 		$this->registerContentType( CITIZEN_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => CITIZEN_CONTENT_TYPE_GUID,
 				'content_name' => 'Citizen Entry',
