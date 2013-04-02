@@ -3,7 +3,7 @@
 		{assign var=ticketscnt value=$citizenInfo.tickets|@count}
 		{jstab title="Appointments ($ticketscnt)"}
 		{legend legend="Appointments"}
-		<div class="row">
+		<div class="control-group">
 			{formlabel label="Tickets" for="ticket"}
 			{forminput}
 			<table>
