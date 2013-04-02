@@ -27,12 +27,12 @@
 							<td>
 								{if isset($citizenInfo.xref[xref].usn) && ($citizenInfo.xref[xref].usn <> '') }
 									{$citizenInfo.xref[xref].usn|escape}
-									{smartlink ititle="Link to" ifile="display_citizen.php" ibiticon="icons/accessories-text-editor" content_id=$citizenInfo.xref[xref].usn}
+									{smartlink ititle="Link to" ifile="display_citizen.php" booticon="icon-edit" content_id=$citizenInfo.xref[xref].usn}
 								{/if}
 							</td>
 							<td>
 								<span class="actionicon">
-									{smartlink ititle="View" ifile="view_xref.php" ibiticon="icons/accessories-text-editor" source=$citizenInfo.xref[xref].source xref=$citizenInfo.xref[xref].cross_reference}
+									{smartlink ititle="View" ifile="view_xref.php" booticon="icon-edit" source=$citizenInfo.xref[xref].source xref=$citizenInfo.xref[xref].cross_reference}
 								</span>
 								<label for="ev_{$citizenInfo.xref[xref].cross_reference}">	
 									{$citizenInfo.xref[xref].cross_reference}

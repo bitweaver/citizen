@@ -26,7 +26,7 @@
 							</td>
 							<td>
 								<span class="actionicon">
-									{smartlink ititle="View" ifile="view_ticket.php" ibiticon="icons/accessories-text-editor" ticket_id=$citizenInfo.tickets[ticket].ticket_id}
+									{smartlink ititle="View" ifile="view_ticket.php" booticon="icon-edit" ticket_id=$citizenInfo.tickets[ticket].ticket_id}
 								</span>
 								<label for="ev_{$citizenInfo.tickets[ticket].ticket_no}">	
 									{$citizenInfo.tickets[ticket].staff_id}

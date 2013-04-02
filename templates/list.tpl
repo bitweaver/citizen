@@ -13,7 +13,7 @@
 
 		<div class="navbar">
 			<ul>
-				<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
+				<li>{booticon iname="icon-circle-arrow-right"  ipackage="icons"  iexplain="sort by"}</li>
 		{*		<li>{smartlink ititle="Citizen Number" isort="content_id" idefault=1 iorder=desc ihash=$listInfo.ihash}</li>		
 				<li>{smartlink ititle="Forename" isort="forename" ihash=$listInfo.ihash}</li>		*}
 				<li>{smartlink ititle="Surname" isort="surname" ihash=$listInfo.ihash}</li>
