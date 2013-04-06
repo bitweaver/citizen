@@ -17,7 +17,7 @@
 	{if $preview}
 		<h2>Preview - {$pageInfo.title}</h2>
 		<div class="preview">
-			{include file="bitpackage:citizen/citizen_display.tpl" page=`$citizenInfo.content_id`}
+			{include file="bitpackage:citizen/citizen_display.tpl" page=$citizenInfo.content_id}
 		</div>
 	{/if}
 

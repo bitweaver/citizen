@@ -1,5 +1,6 @@
 {strip}
-<ul>
+<a class="dropdown-toggle" data-toggle="dropdown" href="#"> {tr}{$packageMenuTitle}{/tr} <b class="caret"></b></a>
+<ul class="{$packageMenuClass}">
 	<li><a class="item" href="{$smarty.const.CITIZEN_PKG_URL}list.php">{tr}List Citizens{/tr}</a></li>
 	{if $gBitUser->isAdmin() or $gBitUser->hasPermission( 'bit_p_edit_irlist' ) }
 		<li><a class="item" href="{$smarty.const.CITIZEN_PKG_URL}edit.php">{booticon iname="icon-file" ipackage="icons" iexplain="create citizen" iforce="icon"} {tr}Create/Edit a Citizen{/tr}</a></li>
