@@ -2,7 +2,7 @@
 	<div class="content">
 
 		{if isset($citizenInfo.usn) && ($citizenInfo.usn <> '') }
-		<div class="control-group">
+		<div class="form-group">
 			{formlabel label="USN" for="usn"}
 			{forminput}
 				{$citizenInfo.usn|escape} 
@@ -10,7 +10,7 @@
 		</div>
 		{/if}
 		{if isset($citizenInfo.organisation) && ($citizenInfo.organisation <> '') }
-		<div class="control-group">
+		<div class="form-group">
 			{formlabel label="Organisation" for="organisation"}
 			{forminput}
 				{$citizenInfo.organisation|escape} 
@@ -18,7 +18,7 @@
 		</div>
 		{/if}
 		{if isset($citizenInfo.dob) && ($citizenInfo.dob <> '') }
-		<div class="control-group">
+		<div class="form-group">
 			{formlabel label="Date of Birth" for="dob"}
 			{forminput}
 				{$citizenInfo.dob|bit_long_date}
@@ -26,7 +26,7 @@
 		</div>
 		{/if}
 		{if isset($citizenInfo.nino) && ($citizenInfo.nino <> '') }
-		<div class="control-group">
+		<div class="form-group">
 			{formlabel label="National Insurance Number" for="nino"}
 			{forminput}
 				{$citizenInfo.nino|escape}

@@ -1,4 +1,4 @@
-		<div class="control-group">
+		<div class="form-group">
 			{formlabel label="Address" for="lpi"}
 			{forminput}
 				{if isset($citizenInfo.sao) && ($citizenInfo.sao <> '') }
@@ -19,7 +19,7 @@
 			{/forminput}
 		</div>
 		{if isset($citizenInfo.x_coordinate) && ($citizenInfo.x_coordinate <> '') }
-		<div class="control-group">
+		<div class="form-group">
 			{formlabel label="Visual Centre Coordinates" for="street_start_x"}
 			{forminput}
 				Easting: {$citizenInfo.x_coordinate|escape} Northing: {$citizenInfo.y_coordinate|escape}

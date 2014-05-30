@@ -36,7 +36,7 @@
 					{legend legend="`$editLabel` Body"}
 						<input type="hidden" name="content_id" value="{$citizenInfo.content_id}" />
 						
-						<div class="control-group">
+						<div class="form-group">
 							{formfeedback warning=$errors.names}
 							{formfeedback warning=$errors.store}
 
@@ -57,61 +57,61 @@
 							{/forminput}
 							
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Title" for="prefix"}
 							{forminput}
 								<input size="60" type="text" name="prefix" id="prefix" value="{$citizenInfo.prefix|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Forename" for="forename"}
 							{forminput}
 								<input size="60" type="text" name="forename" id="forename" value="{$citizenInfo.forename|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Surname" for="surname"}
 							{forminput}
 								<input size="60" type="text" name="surname" id="surname" value="{$citizenInfo.surname|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Suffix" for="suffix"}
 							{forminput}
 								<input size="60" type="text" name="suffix" id="suffix" value="{$citizenInfo.suffix|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Organisation" for="organisation"}
 							{forminput}
 								<input size="60" type="text" name="organisation" id="organisation" value="{$citizenInfo.organisation|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="NI Number" for="nino"}
 							{forminput}
 								<input size="10" type="text" name="nino" id="nino" value="{$citizenInfo.nino|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Date of Birth" for="dob"}
 							{forminput}
 								<input size="10" type="text" name="dob" id="dob" value="{$citizenInfo.dob|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Date of eighteen" for="eighteenth"}
 							{forminput}
 								<input size="10" type="text" name="eighteenth" id="eighteenth" value="{$citizenInfo.eighteenth|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Date of Death" for="dod"}
 							{forminput}
 								<input size="10" type="text" name="dod" id="dod" value="{$citizenInfo.dod|escape}" />
 							{/forminput}
 						</div>
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Note" for="description"}
 							{forminput}
 								<input size="60" type="text" name="description" id="description" value="{$citizenInfo.description|escape}" />
@@ -126,14 +126,14 @@
 							{include file="bitpackage:quicktags/quicktags_full.tpl"}
 						{/if}
 
-						<div class="control-group">
+						<div class="form-group">
 							{forminput}
 								<textarea id="{$textarea_id}" name="edit" rows="{$rows|default:20}" cols="{$cols|default:80}">{$citizenInfo.data|escape:html}</textarea>
 							{/forminput}
 						</div>
 
 						{if $page ne 'SandBox'}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Comment" for="comment"}
 								{forminput}
 									<input size="50" type="text" name="comment" id="comment" value="{$citizenInfo.comment}" />
@@ -156,7 +156,7 @@
 
 			{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_mini_tpl"}
 
-			<div class="control-group submit">
+			<div class="form-group submit">
 				<input type="submit" class="btn btn-default" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
 				<input type="submit" class="btn btn-default" name="fSaveCitizen" value="{tr}Save{/tr}" />
 			</div>

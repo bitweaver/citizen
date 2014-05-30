@@ -2,7 +2,7 @@
 		{assign var=xrefcnt value=$citizenInfo.xref|@count}
 		{jstab title="Cross reference ($xrefcnt)"}
 		{legend legend="Imported References"}
-		<div class="control-group">
+		<div class="form-group">
 			{formlabel label="Cross reference" for="xref"}
 			{forminput}
 			<table>
